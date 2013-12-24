@@ -21,9 +21,33 @@ d1.normalize <- function( x, range )
   return( 2 * ( x - min( range ) ) / diff( range ) - 1 )
 # Converts [a,b] to [-1,1]
 
+
+#' Chebychev approximation
+#' 
+#' Standard Chebychev approximation of an arbitrary function.
+#' 
+#' @param fn a function \eqn{f(x)} or \eqn{f(x,\beta)} for \eqn{\beta} a list of
+#'   function parameters.  If the latter, must be coded with second argument a 
+#'   list names \code{opts}, i.e. \code{fn <- function( x, opts )}
+#' @param range the range of the approximation.
+#' @param iOrder the order of the polynomial approximation.
+#' @param iPts the number of points at which the approximation is computed. Must
+#'   be at least as large as \code{iOrder}.
+#' @param fn.opts (optional) options passed to \code{fn}
+#' @param fn.vals the values of \code{fn} on \code{grid}.  Useful if \code{fn}
+#'   is very slow to evaluate.
+#' @param grid (optional) the grid on which the function is to be approximated.
+#' @param details If \code{TRUE}, returns extra details about the approximation.
+#' 
+#' @return A function which approximates the input fn over the interval 
+#'   \code{range}. If \code{details=TRUE}, also includes the polynomial 
+#'   desciption over [-1,1], as well as the approximation errors
+#' @seealso \code{\link{sp1.poly}}
+#' @examples
+#' cube <- function( x, opts ) opts$A * x^3
+#' approx <- d1.poly( cube, c(-4,2), 4, 20, fn.opts=list(A=2) )
+#' sapply( c(-3, -2, 0, .5 ), function( x ) abs( approx(x) - 2 * x ^ 3 ) )
 d1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=NULL, details=FALSE ){
-# Approximates the function fn using Chebychev polynomials evaluated at the
-# points in grid, returns a chebychev polynomial object
   
   if ( is.null( grid ) ) grid <- d1.grid( range, iPts )
         # Computes the Chebychev grid if not supplied
@@ -46,8 +70,7 @@ d1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=N
   fn.poly <- function( x ) as.function(poly)( d1.normalize( x, range ) ) 
         # The function returning the value of the polynomial over the range
   if( !details ) return( fn.poly )
-  return( list( fn=fn.poly, poly=poly, residuals=basis.reg$residuals, 
-                std.err=summary(basis.reg)$coefficients[, 2 ] ) )
+  return( list( fn=fn.poly, poly=poly, residuals=basis.reg$residuals ) )
   
 }
 

@@ -37,8 +37,8 @@ Judd, Kenneth L (1998) Numerical Methods in Economics
 }
 \examples{
 ## Compute basic approximations to natural logarithm
-RR <- sp1.poly( log, c(0,4), 6, 10 )
-SS <- sp1.poly( log, c(0,4), 6, 10, n.shape=c(5,40), sign.deriv=c(1,-1), solver='NLOPT_LD_SLSQP' )
+RR <- d1.poly( log, c(0,4), 6, 10 )
+SS <- sp1.poly( log, c(0,4), 6, 10, n.shape=c(5,10), sign.deriv=c(1,-1), solver='NLOPT_LD_SLSQP' )
 pp <-  seq( 0, 4, length.out=100 )
 plot( pp, sapply(pp, RR), lwd=2, col=2, type='l' )
 lines( pp, sapply(pp, log), lwd=2, col=1 )
