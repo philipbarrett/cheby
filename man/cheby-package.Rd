@@ -3,39 +3,45 @@
 \alias{cheby}
 \docType{package}
 \title{
-What the package does (short line)
-~~ package title ~~
+Computes polynomial approximations of arbitrary functions
 }
 \description{
-More about what it does (maybe more than one line)
-~~ A concise (1-5 lines) description of the package ~~
+Package to implement Chebychev and shape-preserving Chebychev approximations in one and two dimensions.
 }
 \details{
 \tabular{ll}{
 Package: \tab cheby\cr
 Type: \tab Package\cr
 Version: \tab 1.0\cr
-Date: \tab 2013-12-23\cr
-License: \tab What license is it under?\cr
+Date: \tab 2013-12-24\cr
+License: \tab GPL-3\cr
 }
-~~ An overview of how to use the package, including the most important functions ~~
+
+Generates polynomial approximations of arbitrary functions in one and two dimensions, whilst preserving slope, concavity and higher derivatives wherever specified.
+
+\code{d1.poly} is the main routine for approximating one-dimensional funcitons.  \code{sp1.poly} does the same but preserves the sign of an arbitrary number of derivatives
+
+[Not yet working: 2d Chebychev and shape-preserving functional approximations]
+
+Comments and suggestions are gratefully received by the author.
 }
 \author{
-Who wrote it
-
-Maintainer: Who to complain to <yourfault@somewhere.net>
-~~ The author and/or maintainer of the package ~~
+Philip Barrett <pobarrett@uchicago.edu>
 }
 \references{
-~~ Literature or other references for background information ~~
+Judd, Kenneth L (1998) Numerical Methods in Economics
 }
-~~ Optionally other standard keywords, one per line, from file KEYWORDS in the R documentation ~~
-~~ directory ~~
 \keyword{ package }
 \seealso{
-~~ Optional links to other man pages, e.g. ~~
-~~ \code{\link[<pkg>:<pkg>-package]{<pkg>}} ~~
+\code{\link{d1.poly}}, \code{\link{sp1.poly}}
 }
 \examples{
-~~ simple examples of the most important functions ~~
+## Compute basic approximations to natural logarithm
+RR <- sp1.poly( log, c(0,4), 6, 10 )
+SS <- sp1.poly( log, c(0,4), 6, 10, n.shape=c(5,40), sign.deriv=c(1,-1), solver='NLOPT_LD_SLSQP' )
+pp <-  seq( 0, 4, length.out=100 )
+plot( pp, sapply(pp, RR), lwd=2, col=2, type='l' )
+lines( pp, sapply(pp, log), lwd=2, col=1 )
+lines( pp, sapply(pp, SS), lwd=2, col=4 )
+legend( 'bottomright', c( 'log', 'Order 6 polynomial approx', 'Order 6 shape-preserving polynomial approx' ), lwd=2, col=c(1,2,4), bty='n' )
 }
