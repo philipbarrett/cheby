@@ -1,0 +1,22 @@
+RUNIT TEST PROTOCOL -- Tue Dec 24 08:29:07 2013 
+*********************************************** 
+Number of test functions: 1 
+Number of errors: 0 
+Number of failures: 0 
+
+ 
+1 Test Suite : 
+cheby - 1 test function, 0 errors, 0 failures
+
+
+
+Details 
+*************************** 
+Test Suite: cheby 
+Test function regexp: ^test.+ 
+Test file regexp: ^runit.+\.[rR]$ 
+Involved directory: 
+inst/unitTests 
+--------------------------- 
+Test file: inst/unitTests/runit.1.R 
+test.setVars: (1 checks) ... OK (0 seconds)
