@@ -1,1 +1,3 @@
-exportPattern("^[[:alpha:]]+")
+export(d1.poly)
+export(dn.poly)
+export(sp1.poly)

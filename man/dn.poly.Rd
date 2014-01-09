@@ -1,0 +1,58 @@
+\name{dn.poly}
+\alias{dn.poly}
+\title{Mutli-dimensional Chebychev approximation}
+\usage{
+dn.poly(fn, range, iOrder, iPts, fn.opts = NULL, fn.vals = NULL,
+  grid = NULL, details = FALSE)
+}
+\arguments{
+  \item{fn}{a function \eqn{f(x_1,..., x_n)} or \eqn{f(x_1,
+  ..., x_n,\beta)} for \eqn{\beta} a list of function
+  parameters.  If the latter, must be coded with second
+  argument a list names \code{opts}, i.e. \code{fn <-
+  function( x, opts )}}
+
+  \item{range}{the range of the approximation, given as a
+  list of vectors. Eg for a 3-dimensional function
+  approximated over [1,2] * [-1,2] * [0,4], would be
+  \code{range = list( c(1,2), c(-1,2), c(0,4) )}}
+
+  \item{iOrder}{the vector of orders of the polynomial
+  approximation. Eg. to approximate using polynomials of
+  order 3 and 5 in the 1st and 2nd dimensions respectively,
+  would be \code{iOrder=c(5,6)}}
+
+  \item{iPts}{the vector of number of points at which the
+  approximation is computed. Must be at least as large as
+  \code{iOrder} (element-by-element).}
+
+  \item{fn.opts}{(optional) options passed to \code{fn}
+  [NOT YET FUNCTIONAL]}
+
+  \item{fn.vals}{the values of \code{fn} on \code{grid}.
+  Useful if \code{fn} is very slow to evaluate.}
+
+  \item{grid}{(optional) the grid on which the function is
+  to be approximated.  Should be submitted as a list of
+  vectors for the grids in each dimension.}
+
+  \item{details}{If \code{TRUE}, returns extra details
+  about the approximation.}
+}
+\value{
+A function which approximates the input fn over the box
+defined by \code{range}. If \code{details=TRUE}, also
+includes the polynomial desciption over [-1,1], as well as
+the approximation errors
+}
+\description{
+Standard Chebychev approximation of an arbitrary function.
+[INCOMPLETE]
+}
+\examples{
+# tbc
+}
+\seealso{
+\code{\link{d1.poly}}
+}
+

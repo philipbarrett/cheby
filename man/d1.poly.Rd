@@ -1,6 +1,6 @@
 \name{d1.poly}
 \alias{d1.poly}
-\title{Chebychev approximation}
+\title{1-dimensional Chebychev approximation}
 \usage{
 d1.poly(fn, range, iOrder, iPts, fn.opts = NULL, fn.vals = NULL,
   grid = NULL, details = FALSE)

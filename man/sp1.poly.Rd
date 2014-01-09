@@ -65,7 +65,7 @@ sp.flat.x0 <- sp1.poly(  log, c(0,4), 6, 10, x0=c(1,1,1,1,1,1,1), poly.return=TR
 print( base$poly - sp.compare$poly )
 print( base$poly - sp.flat.x0$poly )
    # Comparison without using shape-preserving methods
-sp.concave <- sp1.poly( log, c(0,4), 6, 10, n.shape=c(5,40), sign.deriv=c(1,-1) )
+sp.concave <- sp1.poly( log, c(0,4), 6, 10, n.shape=c(5,10), sign.deriv=c(1,-1) )
 pp <-  seq( 0, 4, length.out=100 )
 plot( pp, sapply(pp, base$fn), lwd=2, col=2, type='l' )
 lines( pp, sapply(pp, log), lwd=2, col=1 )

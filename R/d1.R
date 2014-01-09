@@ -22,7 +22,7 @@ d1.normalize <- function( x, range )
 # Converts [a,b] to [-1,1]
 
 
-#' Chebychev approximation
+#' 1-dimensional Chebychev approximation
 #' 
 #' Standard Chebychev approximation of an arbitrary function.
 #' 
@@ -47,7 +47,9 @@ d1.normalize <- function( x, range )
 #' cube <- function( x, opts ) opts$A * x^3
 #' approx <- d1.poly( cube, c(-4,2), 4, 20, fn.opts=list(A=2) )
 #' sapply( c(-3, -2, 0, .5 ), function( x ) abs( approx(x) - 2 * x ^ 3 ) )
-d1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=NULL, details=FALSE ){
+#' @export
+d1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, 
+                     grid=NULL, details=FALSE ){
   
   if ( is.null( grid ) ) grid <- d1.grid( range, iPts )
         # Computes the Chebychev grid if not supplied

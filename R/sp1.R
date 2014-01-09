@@ -111,6 +111,7 @@ sp1.deriv.order.grad.fd <- function( grid, poly, range, order ){
 #' legend( 'bottomright', c( 'log', 'Order 6 polynomial approx', 
 #'      'Order 6 shape-preserving polynomial approx' ), lwd=2, col=c(1,2,4), bty='n' )
 #'    # Compare the Chebychev and shape-preserving approximations
+#' @export
 sp1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=NULL, 
                             n.shape=0, sign.deriv=NULL, x0=NULL, solver='NLOPT_LD_SLSQP', 
                             tol=1e-06, poly.return=FALSE ){
