@@ -47,7 +47,8 @@ the approximation errors
 }
 \description{
 Standard Chebychev approximation of an arbitrary function.
-[INCOMPLETE]
+[INCOMPLETE - CURRENTLY AIMING ONLY FOR 2-DIMENSIONAL
+FUNCTIONS]
 }
 \examples{
 # tbc
