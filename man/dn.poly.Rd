@@ -47,11 +47,16 @@ the approximation errors
 }
 \description{
 Standard Chebychev approximation of an arbitrary function.
-[INCOMPLETE - CURRENTLY AIMING ONLY FOR 2-DIMENSIONAL
-FUNCTIONS]
+Currently only works for two-dimensional approximation
 }
 \examples{
-# tbc
+test.fn <- function( x,y ) x^2*y^.5
+ff <- dn.poly( test.fn, list( c(0,4), c(0,4) ), c( 6, 6), c(12,12) )
+XX <- seq(0,4,.05)
+plot( XX, mapply( test.fn, XX, 1 ), type='l' )
+lines( XX, mapply( ff, XX, 1 ), col=2 )
+plot( XX, mapply( test.fn, 1, XX ), type='l' )
+lines( XX, mapply( ff, 1, XX ), col=2 )
 }
 \seealso{
 \code{\link{d1.poly}}

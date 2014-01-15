@@ -1,3 +1,5 @@
+export(d1.grid)
+export(d1.normalize)
 export(d1.poly)
 export(dn.poly)
 export(sp1.poly)

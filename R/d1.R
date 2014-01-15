@@ -5,9 +5,14 @@
 # Created: 23dec2013                                                                #
 #####################################################################################
 
+#' Calculate grid of approximating points
+#' 
+#' Computes either a Uniform or Chebychev grid of collocation nodes
+#' @param vRange the vector of the range over which the nodes are computed
+#' @param iPts number of colocations points
+#' @param Either \code{Chebychev} or \code{Uniform}
+#' @export
 d1.grid <- function( vRange, iPts, stMethod='Chebychev' ){
-# Computes the grid of approximating points
-  
   if( stMethod=='Chebychev' ){
     zz <- sapply( 1:iPts, function(i) return( - cos( ( 2 * i - 1 ) / ( 2 * iPts ) * pi ) ) )
     return( ( zz + 1 ) * diff( vRange ) / 2 + vRange [ 1 ] )
@@ -17,6 +22,7 @@ d1.grid <- function( vRange, iPts, stMethod='Chebychev' ){
   # The uniform grid
 }
 
+#' @export
 d1.normalize <- function( x, range )
   return( 2 * ( x - min( range ) ) / diff( range ) - 1 )
 # Converts [a,b] to [-1,1]
@@ -51,6 +57,8 @@ d1.normalize <- function( x, range )
 d1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, 
                      grid=NULL, details=FALSE ){
   
+  stopifnot( iOrder <= iPts )
+        # Check number of points is at least as big as the grid
   if ( is.null( grid ) ) grid <- d1.grid( range, iPts )
         # Computes the Chebychev grid if not supplied
   if( is.null( fn.vals ) ) fn.vals <- 

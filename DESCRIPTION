@@ -6,5 +6,5 @@ Date: 2013-12-23
 Author: Philip Barrett
 Maintainer: Philip Barrett <pobarrett@gmail.com>
 Description: Computes Chbychev approximation to arbitrary 1- and 2-dimensional functions.  Calculates shape-preserving approximations to 1-dimensional functions.
-Depends: polynom, orthopolynom, nloptr, multicore
+Depends: polynom, orthopolynom, nloptr, multicore, multipol
 License: GPL-3
