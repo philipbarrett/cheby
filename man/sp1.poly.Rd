@@ -4,7 +4,8 @@
 \usage{
 sp1.poly(fn, range, iOrder, iPts, fn.opts = NULL, fn.vals = NULL,
   grid = NULL, n.shape = 0, sign.deriv = NULL, x0 = NULL,
-  solver = "NLOPT_LD_SLSQP", tol = 1e-06, poly.return = FALSE)
+  solver = "NLOPT_LD_SLSQP", tol = 1e-06, poly.return = FALSE,
+  quiet = FALSE)
 }
 \arguments{
   \item{fn}{a function \eqn{f(x)} or \eqn{f(x,\beta)} for

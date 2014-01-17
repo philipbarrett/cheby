@@ -114,7 +114,7 @@ sp1.deriv.order.grad.fd <- function( grid, poly, range, order ){
 #' @export
 sp1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=NULL, 
                             n.shape=0, sign.deriv=NULL, x0=NULL, solver='NLOPT_LD_SLSQP', 
-                            tol=1e-06, poly.return=FALSE ){
+                            tol=1e-06, poly.return=FALSE, quiet=FALSE ){
   # 0. Set up
   if ( is.null( x0 ) ) x0 <- as.vector( d1.poly( fn, range, iOrder, iPts, 
                                                  fn.opts, fn.vals, details= TRUE )$poly )
@@ -155,7 +155,7 @@ sp1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=
   }
   
   #* 3. Check the status of the solver and return *#
-  if( optimize$status > 0)
+  if( all( !quiet, optimize$status > 0) )
     message( 'Sucess: nlopt terminated after ', optimize$iterations, ' iterations \n',
              optimize$message )
   if( optimize$status < 0)
