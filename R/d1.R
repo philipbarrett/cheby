@@ -40,14 +40,17 @@ d1.normalize <- function( x, range )
 #' @param iPts the number of points at which the approximation is computed. Must
 #'   be at least as large as \code{iOrder}.
 #' @param fn.opts (optional) options passed to \code{fn}
-#' @param fn.vals the values of \code{fn} on \code{grid}.  Useful if \code{fn}
+#' @param fn.vals the values of \code{fn} on \code{grid}.  Useful if \code{fn} 
 #'   is very slow to evaluate.
 #' @param grid (optional) the grid on which the function is to be approximated.
 #' @param details If \code{TRUE}, returns extra details about the approximation.
-#' 
+#'   
 #' @return A function which approximates the input fn over the interval 
-#'   \code{range}. If \code{details=TRUE}, also includes the polynomial 
-#'   desciption over [-1,1], as well as the approximation errors
+#'   \code{range}. If \code{details=TRUE}, return is a list with entries 
+#'   \code{fn, poly, fn.deriv, poly.deriv, residuals}, which are, respectively, 
+#'   the approximating function, the polynomial desciption over [-1,1], the 
+#'   derivative of the approximation, the polynomial desciption of the
+#'   derivative, and the approximation errors.
 #' @seealso \code{\link{sp1.poly}}
 #' @examples
 #' cube <- function( x, opts ) opts$A * x^3
@@ -80,7 +83,10 @@ d1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL,
   fn.poly <- function( x ) as.function(poly)( d1.normalize( x, range ) ) 
         # The function returning the value of the polynomial over the range
   if( !details ) return( fn.poly )
-  return( list( fn=fn.poly, poly=poly, residuals=basis.reg$residuals ) )
+  
+  poly.deriv <- deriv( poly )
+  f.deriv <- function( x ) 2 / ( diff( range ) ) * as.function(poly.deriv)( d1.normalize( x, range ) ) 
+  return( list( fn=fn.poly, poly=poly, fn.deriv=f.deriv, deriv.poly=poly.deriv, residuals=basis.reg$residuals ) )
   
 }
 

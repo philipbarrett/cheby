@@ -84,22 +84,24 @@ sp1.deriv.order.grad.fd <- function( grid, poly, range, order ){
 #'   sign.deriv=c(1,-1).
 #' @param x0 initial guess of the polynomial approximation. Default is the 
 #'   standard Chebychev approximation.
-#' @param solver the \code{nlopt} solver to use in computing the best fit.
+#' @param solver the \code{nlopt} solver to use in computing the best fit. 
 #'   Default is \code{NLOPT_LD_SLSQP}.
 #' @param tol tolerance for solver convergence.  Default is \code{1e-06}
-#' @param poly.return If \code{TRUE}, returns extra details about the 
-#'   approximation.
+#' @param detals If \code{TRUE}, returns extra details about the approximation.
 #'   
 #' @references \code{nloptr} documentation 
 #'   \link{http://cran.r-project.org/web/packages/nloptr/nloptr.pdf}
 #' @seealso \code{\link{d1.poly}}
 #'   
-#' @return A function which approximates \code{fn}.  If \code{poly.return=TRUE},
-#'   returns also the polynomial description ovver [-1,1]
+#' @return A function which approximates \code{fn}.  If \code{details=TRUE}, 
+#'   return is a list with entries \code{fn, poly, fn.deriv, poly.deriv, 
+#'   residuals}, which are, respectively, the approximating function, the 
+#'   polynomial desciption over [-1,1], the derivative of the approximation, the
+#'   polynomial desciption of the derivative, and the approximation errors.
 #' @examples
 #' base <- d1.poly( log, c(0,4), 6, 10, details=TRUE )
-#' sp.compare <- sp1.poly(  log, c(0,4), 6, 10, poly.return=TRUE )
-#' sp.flat.x0 <- sp1.poly(  log, c(0,4), 6, 10, x0=c(1,1,1,1,1,1,1), poly.return=TRUE )
+#' sp.compare <- sp1.poly(  log, c(0,4), 6, 10, details=TRUE )
+#' sp.flat.x0 <- sp1.poly(  log, c(0,4), 6, 10, x0=c(1,1,1,1,1,1,1), details=TRUE )
 #' print( base$poly - sp.compare$poly )
 #' print( base$poly - sp.flat.x0$poly ) 
 #'    # Comparison without using shape-preserving methods
@@ -114,7 +116,7 @@ sp1.deriv.order.grad.fd <- function( grid, poly, range, order ){
 #' @export
 sp1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=NULL, 
                             n.shape=0, sign.deriv=NULL, x0=NULL, solver='NLOPT_LD_SLSQP', 
-                            tol=1e-06, poly.return=FALSE, quiet=FALSE ){
+                            tol=1e-06, details=FALSE, quiet=FALSE ){
   # 0. Set up
   if ( is.null( x0 ) ) x0 <- as.vector( d1.poly( fn, range, iOrder, iPts, 
                                                  fn.opts, fn.vals, details= TRUE )$poly )
@@ -163,8 +165,12 @@ sp1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=
   
   fn.out <- function( x ) as.function(polynomial( optimize$solution ) )( d1.normalize( x, range ) )
         # Create the funciton from the polynomial
-  if( poly.return)
-    return( list( poly = polynomial( optimize$solution ), fn=fn.out ) )
-  else
-    return( fn.out )
+  if( !details) return( fn.out )
+    
+  poly <- polynomial( optimize$solution )
+  poly.deriv <- deriv( poly )
+  f.deriv <- function( x ) 2 / ( diff( range ) ) * as.function(poly.deriv)( d1.normalize( x, range ) ) 
+  
+  return( list( fn=fn.out, poly=poly, fn.deriv=f.deriv, deriv.poly=poly.deriv ) )
+  
 }

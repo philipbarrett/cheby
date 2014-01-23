@@ -19,9 +19,7 @@ License: \tab GPL-3\cr
 
 Generates polynomial approximations of arbitrary functions in one and two dimensions, whilst preserving slope, concavity and higher derivatives wherever specified.
 
-\code{d1.poly} is the main routine for approximating one-dimensional funcitons.  \code{sp1.poly} does the same but preserves the sign of an arbitrary number of derivatives
-
-[Not yet working: 2d Chebychev and shape-preserving functional approximations]
+\code{d1.poly} is the main routine for approximating one-dimensional funcitons.  \code{sp1.poly} does the same but preserves the sign of an arbitrary number of derivatives.  2-Dimensional Chebychev polynomials are also available with \code{dn.poly}.  Higher order Chebychev and shape-preserving approximations to follow later.
 
 Comments and suggestions are gratefully received by the author.
 }
@@ -33,7 +31,7 @@ Judd, Kenneth L (1998) Numerical Methods in Economics
 }
 \keyword{ package }
 \seealso{
-\code{\link{d1.poly}}, \code{\link{sp1.poly}}
+\code{\link{d1.poly}}, \code{\link{sp1.poly}}, \code{link{dn.poly}}
 }
 \examples{
 ## Compute basic approximations to natural logarithm
