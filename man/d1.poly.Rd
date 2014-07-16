@@ -32,9 +32,12 @@ d1.poly(fn, range, iOrder, iPts, fn.opts = NULL, fn.vals = NULL,
 }
 \value{
 A function which approximates the input fn over the
-interval \code{range}. If \code{details=TRUE}, also
-includes the polynomial desciption over [-1,1], as well as
-the approximation errors
+interval \code{range}. If \code{details=TRUE}, return is a
+list with entries \code{fn, poly, fn.deriv, poly.deriv,
+residuals}, which are, respectively, the approximating
+function, the polynomial desciption over [-1,1], the
+derivative of the approximation, the polynomial desciption
+of the derivative, and the approximation errors.
 }
 \description{
 Standard Chebychev approximation of an arbitrary function.
