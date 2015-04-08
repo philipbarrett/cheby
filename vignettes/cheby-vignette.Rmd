@@ -46,10 +46,10 @@ The basic command for Chebychev interpolation is `d1.poly`.  For example, to com
 
 ```{r}
 suppressMessages(library(cheby))
-base <- d1.poly( fn=log, range=c(0,4), iOrder=6, iPts=10 )
+base <- d1.poly( fn=log, range=c(.1,4), iOrder=6, iPts=10 )
 ```
 
-This computes a 6th-order approximation to `log` on the interval $[0,4]$ using 10 grid points.   The output is a function that we can use straight away.  We can check the approximation at a few points:
+This computes a 6th-order approximation to `log` on the interval $[0,4]$ (recall that `log` is not continuous at zero) using 10 grid points.   The output is a function that we can use straight away.  We can check the approximation at a few points:
 
 ```{r}
 c( base(1), log(1) )
@@ -59,10 +59,18 @@ c( base(2), log(2) )
 Better still, we can see the approximation visually:
 
 ```{r}
-plot( log, type='l', lwd=2 ) 
-plot( base, col='blue', lwd=2, add=TRUE )
+plot( log, xlim=c(.1, 4), type='l' ) 
+plot( base, xlim=c(.1, 4), col='blue', add=TRUE )
 ```
 
+So the approximation is very good.  And it is fast:
+
+```{r}
+library(microbenchmark)
+microbenchmark(base <- d1.poly( fn=log, range=c(.1,4), iOrder=6, iPts=10 ))
+```
+
+However, the approximation is not concave - it oscilates slightly around the approximated function.  In some numerical calculations, preserving properties of the function can be important.  Later we will discuss how value function will often fail if the continuation value function is not concave, as then there is no unique local interior maximum.
 
 ## Extracting more information about the approximation
 
