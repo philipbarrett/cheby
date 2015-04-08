@@ -31,7 +31,7 @@ Judd, Kenneth L (1998) Numerical Methods in Economics
 }
 \keyword{ package }
 \seealso{
-\code{\link{d1.poly}}, \code{\link{sp1.poly}}, \code{link{dn.poly}}
+\code{\link{d1.poly}}, \code{\link{sp1.poly}}, \code{\link{dn.poly}}
 }
 \examples{
 ## Compute basic approximations to natural logarithm

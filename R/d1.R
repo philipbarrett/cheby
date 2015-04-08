@@ -10,7 +10,7 @@
 #' Computes either a Uniform or Chebychev grid of collocation nodes
 #' @param vRange the vector of the range over which the nodes are computed
 #' @param iPts number of colocations points
-#' @param Either \code{Chebychev} or \code{Uniform}
+#' @param stMethod Either \code{Chebychev} or \code{Uniform}
 #' @export
 d1.grid <- function( vRange, iPts, stMethod='Chebychev' ){
   if( stMethod=='Chebychev' ){
@@ -22,10 +22,15 @@ d1.grid <- function( vRange, iPts, stMethod='Chebychev' ){
   # The uniform grid
 }
 
+#' Normalizes x in [a,b] to [-1,1]
+#' 
+#' Normalizes x in [a,b] to [-1,1].
+#' @param x A number in range
+#' @param range The range
+#' @return 2(x-a)/(b-a)-1
 #' @export
 d1.normalize <- function( x, range )
   return( 2 * ( x - min( range ) ) / diff( range ) - 1 )
-# Converts [a,b] to [-1,1]
 
 
 #' 1-dimensional Chebychev approximation

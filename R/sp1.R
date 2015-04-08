@@ -87,10 +87,11 @@ sp1.deriv.order.grad.fd <- function( grid, poly, range, order ){
 #' @param solver the \code{nlopt} solver to use in computing the best fit. 
 #'   Default is \code{NLOPT_LD_SLSQP}.
 #' @param tol tolerance for solver convergence.  Default is \code{1e-06}
-#' @param detals If \code{TRUE}, returns extra details about the approximation.
+#' @param details If \code{TRUE}, returns extra details about the approximation.
+#' @param quiet Supresses output about success of least-error fitting.  Failure
+#'   will always be reported
 #'   
 #' @references \code{nloptr} documentation 
-#'   \link{http://cran.r-project.org/web/packages/nloptr/nloptr.pdf}
 #' @seealso \code{\link{d1.poly}}
 #'   
 #' @return A function which approximates \code{fn}.  If \code{details=TRUE}, 
@@ -110,7 +111,7 @@ sp1.deriv.order.grad.fd <- function( grid, poly, range, order ){
 #' plot( pp, sapply(pp, base$fn), lwd=2, col=2, type='l' )
 #' lines( pp, sapply(pp, log), lwd=2, col=1 )
 #' lines( pp, sapply(pp, sp.concave), lwd=2, col=4 )
-#' legend( 'bottomright', c( 'log', 'Order 6 polynomial approx', 
+#' legend( 'bottomright', c( 'log', 'Order 6 polynomial approx', \n
 #'      'Order 6 shape-preserving polynomial approx' ), lwd=2, col=c(1,2,4), bty='n' )
 #'    # Compare the Chebychev and shape-preserving approximations
 #' @export

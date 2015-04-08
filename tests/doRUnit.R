@@ -8,6 +8,7 @@
 if(require("RUnit", quietly=TRUE)) {
   
   # 1. Run the test suite
+#   require("RUnit")
   cat("\nRunning unit tests\n")
         # Screen updating
   test.suite <- defineTestSuite( 'cheby', dirs = file.path('inst/unitTests') )

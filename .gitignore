@@ -3,3 +3,4 @@
 .RData
 .Rbuildignore
 cheby.Rproj
+inst/doc
