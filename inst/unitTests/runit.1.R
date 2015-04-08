@@ -31,4 +31,3 @@ test.normalize <- function(){
   checkEquals( d1.normalize( 2, c( 0, 2 ) ), 1 )
   checkEquals( d1.normalize( 3, c( 0, 4 ) ), .5 )
 }
-  

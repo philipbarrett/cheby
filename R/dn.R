@@ -7,8 +7,8 @@
 
 #' Mutli-dimensional Chebychev approximation
 #' 
-#' Standard Chebychev approximation of an arbitrary function.  Currently only
-#' works for two-dimensional approximation
+#' Standard Chebychev approximation of an arbitrary function.  **Currently only
+#' works for two-dimensional approximation**
 #' 
 #' @param fn a function \eqn{f(x_1,..., x_n)} or \eqn{f(x_1, ..., x_n,\beta)} 
 #'   for \eqn{\beta} a list of function parameters.  If the latter, must be 
