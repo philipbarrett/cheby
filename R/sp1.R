@@ -119,7 +119,7 @@ sp1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=
                             tol=1e-06, details=FALSE, quiet=FALSE ){
   # 0. Set up
   if ( is.null( x0 ) ) x0 <- as.vector( d1.poly( fn, range, iOrder, iPts, 
-                                                 fn.opts, fn.vals, details= TRUE )$poly )
+                                           fn.opts, fn.vals, grid, details=TRUE )$poly )
   ub <- Inf * rep( 1, iOrder + 1 )
   lb <- -Inf * rep( 1, iOrder + 1 )
   if ( is.null( grid ) ) grid <- d1.grid( range, iPts )
@@ -147,9 +147,8 @@ sp1.poly <- function( fn, range, iOrder, iPts, fn.opts=NULL, fn.vals=NULL, grid=
     nlopt.opts <- list('algorithm'=solver, "xtol_rel"=tol)
     optimize <- nloptr(x0 = x0, eval_f = eval_f, eval_grad_f = eval_grad_f, lb = lb,
                         ub = ub, opts = nlopt.opts )
-  }
+  }else{
   #* 2.2 With shape-preserving constraints *#
-  else{
       nlopt.opts <- list('algorithm'=solver, "xtol_rel"=tol)
       optimize <- nloptr(x0 = x0, eval_f = eval_f, eval_grad_f = eval_grad_f, lb = lb, ub = ub, 
                          eval_g_ineq = eval_g, eval_jac_g_ineq = eval_jac_g, 
