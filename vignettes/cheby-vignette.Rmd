@@ -48,7 +48,7 @@ The basic command for Chebychev interpolation is `d1.poly`.  For example, to com
 
 ```{r echo=2}
 suppressMessages(library(cheby))
-base <- d1.poly( fn=log, range=c(.01,4), iOrder=6, iPts=7 )
+base <- d1.poly( fn=log, range=c(.01,4), iOrder=10, iPts=11 )
 ```
 
 This computes a 6th-order approximation to `log` on the interval $[0.01,4]$ (recall that `log` is not continuous at zero) using 7 grid points (the minimum possible).   The output is a function that we can use straight away.  We can check the approximation at a few points:
@@ -58,13 +58,13 @@ c( base(1), log(1) )
 c( base(2), log(2) )
 ```
 
-So the approximation is good to around 1 decimal point near 0, and 2 decimal places for higher values of $x$.  Better still, we can see the approximation visually:
+So the approximation is good to 2 decimal places for these values of $x$.  Better still, we can see the approximation visually:
 
-```{r fig.width=8, fig.height=4, echo=1:2, fig.cap = "Sixth-order approximation for log."}
-plot( log, xlim=c(.01, 4), type='l', lwd=2, lty=2 ) 
-plot( base, xlim=c(.01, 4), col='blue', add=TRUE, lwd=2 )
-legend( 'bottomright', c('log', 'Order 6 polynomial approximation'), 
-        col=c('black','blue'), lty=c(2,1), bty='n', lwd=2 )
+```{r fig.width=8, fig.height=6, echo=1:2, fig.cap = "Sixth-order approximation for log."}
+plot( log, xlim=c(.01, 4), type='l', lty=2 ) 
+plot( base, xlim=c(.01, 4), col='red', add=TRUE, lwd=2 )
+legend( 'bottomright', c('log', 'Order 10 polynomial approximation'), 
+        col=c('black', 'red'), lty=2:1, bty='n', lwd=1:2 )
 ```
 
 So the approximation is very good for most of the approximation range, although given the discontinuity at zero it struggles for small $x$.  And it is fast:
@@ -74,14 +74,14 @@ library(microbenchmark)
 microbenchmark(base <- d1.poly( fn=log, range=c(.01,4), iOrder=6, iPts=7 ))
 ```
 
-However, the approximation is not strictly concave - it oscilates slightly around the approximated function.  Note how the dashed log function shows up alternately above and below the approximation.  In some numerical calculations, preserving shape properties of the function can be important.  Later we will discuss how value function will often fail if the continuation value function is not concave, as then there is no unique local interior maximum.  This is not a problem which can be eliminated by simply increasing the order of the approximation, either.
+However, the approximation is not strictly concave - it oscilates slightly around the approximated function.  Note how the dashed log function shows up alternately above and below the approximation.  In some numerical calculations, preserving shape properties of the function can be important.  Later we will discuss how value function will often fail if the continuation value function is not concave, as then there is no unique local interior maximum.  This is not a problem which can be eliminated by simply increasing the order of the approximation, either.  In fact this makes the problem worse.  A higher order approximation improves the fit for small $x$ but comes at the cost of more noticable oscilations at large $x$.
 
 ## Extracting more information about the approximation
 
 To extract more information about the approximation, set the `details` flag to `TRUE`.  
 
 ```{r}
-base.deets <- d1.poly( fn=log, range=c(.01,4), iOrder=6, iPts=7, details=TRUE )
+base.deets <- d1.poly( fn=log, range=c(.01,4), iOrder=10, iPts=11, details=TRUE )
 ```
 
 This returns a five-element list with elements:
@@ -103,11 +103,11 @@ The "standard" usage of `d1.poly` above integrates function calulcation and appr
 Here is an example of how to use this syntax
 
 ```{r}
-grid.pts <- d1.grid( c( .01, 4), 7 )
+grid.pts <- d1.grid( c( .01, 4), 11 )
     # The grid of Chebychev nodes
 log.vals <- sapply( grid.pts, log )
     # The target function evaluated at the approximation nodes
-base.grid <- d1.poly( fn.vals=log.vals, grid=grid.pts, range=c(.01, 4), iOrder=6, iPts=7, details=TRUE )
+base.grid <- d1.poly( fn.vals=log.vals, grid=grid.pts, range=c(.01, 4), iOrder=10, iPts=11, details=TRUE )
 ```
 
 The inclusion of the argument `grid` here is superfluous, as without this `d1.poly` assumes that the function values are evaluated on a grid of Chebychev nodes, which is exactly what `d1.grid` produces here.  If you wish to evaluate the function on a different grid of nodes, you should use this argument to specify that grid.
@@ -117,16 +117,24 @@ The inclusion of the argument `grid` here is superfluous, as without this `d1.po
 One can pass function parameters using the argument `fn.opts`.  However, this *requires* that the target function have all its parameters enter through a single argument named `opts` (using a list to pass multiple parameters where required).  
 
 For example, to compute a fifth-order approximation to the function $A k ^ \alpha$ where $A$ and $\alpha$ are parameters:
-```{r fig.width=8, fig.height=4, fig.cap = "Approximating functions with parameters."}
-target <- function( k, opts )
-  return( opts$A  * k ^ opts$alpha ) 
-apx.1 <- d1.poly( target, c(.01,2), 5, 6, fn.opts=list(A=1, alpha=.7) )
-apx.2 <- d1.poly( target, c(.01,2), 5, 6, fn.opts=list(A=1.1, alpha=.4) )
-plot( function(x) target(x, opts=list(A=1, alpha=.7) ), xlim=c(.01,2), lwd=2, lty=2, ylab='' )
-plot( function(x) target(x, opts=list(A=1.1, alpha=.4) ), xlim=c(.01,2), lwd=2, lty=2, add=TRUE )
-plot( apx.1, xlim=c(.01,2), col='blue', lwd=2, add=TRUE )
-plot( apx.2, xlim=c(.01,2), col='blue', lwd=2, add=TRUE )
+```{r fig.width=8, fig.height=6, fig.cap = "Approximating functions with parameters."}
+target <- function( k, opts ) return( opts$A  * k ^ opts$alpha ) 
+    # The target function
+apx.1 <- d1.poly( target, c(.001,2), 5, 6, fn.opts=list(A=1, alpha=.7) )
+apx.2 <- d1.poly( target, c(.001,2), 5, 6, fn.opts=list(A=1.1, alpha=.2) )
+    # The approximations
+plot( function(x) target(x, opts=list(A=1, alpha=.7) ), xlim=c(.001,2), lty=2, ylab='' )
+plot( function(x) target(x, opts=list(A=1.1, alpha=.2) ), xlim=c(.001,2), lty=2, add=TRUE )
+plot( apx.1, xlim=c(.001,2), col='red', lwd=2, add=TRUE )
+plot( apx.2, xlim=c(.001,2), col='red', lwd=2, add=TRUE )
 ```
+
+## Approximating mulit-variable functions
+
+Functions of more variables can be approximated using `dn.poly`.  This works much the same as `d1.poly1`, but currently only works for functions of two variables.
+
+
+
 
 
 # One-dimensional shape-preserving Chebychev approximation
@@ -137,12 +145,50 @@ plot( apx.2, xlim=c(.01,2), col='blue', lwd=2, add=TRUE )
 
 ## Usage
 
+To approximate a univariate function using a shape-preseving polynomial, we can use `sp1.poly`.  This function takes the same inputs as `d1.poly`, but now also requires details on the shape-preserving restrictions on the polynomial approximation.  These details are provided through the arguments `n.shape` and `sign.deriv`.  The former is a vector establishing the number of Chebychev nodes at which shape restrictions should be imposed.  The second is a vector of positive and negative unit values determining the sign of the restriction.  For example, to restrict the approximation to be increasinging at 3 points and concave at 7, one would use set `n.shape=c(3,7)` and `sign.deriv=c(1,-1)`.
+
+Here's a complete example:
+```{r results='hold', fig.height=6, fig.width=8, echo=-5}
+base.sp <- sp1.poly( fn=log, range=c(.01,4), iOrder=10, iPts=11, n.shape=c(3,21), sign.deriv=c(1,-1) )
+plot( log, xlim=c(.01,4), lty=2 )
+plot( base.sp, xlim=c(.01,4), add=TRUE, lwd=2, col='red' )
+plot( base, xlim=c(.01,4), add=TRUE, lwd=2, col='blue' )
+legend( 'bottomright', c('log', 'Shape-preserving order \n10 polynomial approximation', 'Order 10 polynomial approximation'), 
+        col=c('black', 'red', 'blue'), lty=c(2,1,1), bty='n', lwd=c(1,2,2) )
+```
+Here, we impose concavity at 21 points in the approximation interval and monotonicity at only 3 (as the standard Chebychev approximation delivers near-monotonicity already).  The plot above show that this generates concavity for small values of $x$, where the standard approximation oscillates much more.  The cost, of course, is a poorer fit of the approximation near zero.
+
 
 # An example with applications in economics
 
+I now compute an example problem where the concavity or otherwise of the approximating function makes a difference to the resulting policy function.
+
 ## The problem
 
+I solve the neoclassial growth model with log preferences and Cobb-Douglass production.  The state variable is $k$, the capital-labor ratio.  The value function for the problem is given by:
+
+$$ V(k) = \max_{k'>0} \left\{ \log c + \beta V(k')  \right\} \\
+  \text{s.t.} \qquad k' =  f(k) - c + (1-\delta) k$$
+
+Where $f(k) = Ak^\alpha$ is output per unit of capital.  This example is convenient because it has a known following analytical solution, which means that we can check the approximations relative to the exact truth.  
+
+The solution is:
+
+[[TO BE COMPLETED]]
+
 ## Value function iteration
+
+The first approach is to use value function iteration.  This computes a sequence of functions $V_1, V_2, \ldots, V_N$ via:
+$$ V_{n+1}(k) = T( V_n )(k) $$
+Where:
+$$ T(V)(k) =  \max_{k'>0} \left\{ \log c + \beta V(k')  \right\} \\
+  \text{s.t.} \qquad k' =  f(k) - c + (1-\delta) k$$
+
+This is guaranteed to converge under the infinity norm as the the operator $T$ is contraction mapping.
+
+* Include the code for the operator $T$
+* Store outer loop in a separate example file
+* Distinguish between the sp and non-sp cases.
 
 ## Solving the first-order conditions directly
 
