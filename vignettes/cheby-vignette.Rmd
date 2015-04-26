@@ -165,16 +165,20 @@ I now compute an example problem where the concavity or otherwise of the approxi
 
 ## The problem
 
-I solve the neoclassial growth model with log preferences and Cobb-Douglass production.  The state variable is $k$, the capital-labor ratio.  The value function for the problem is given by:
+I solve the neoclassial growth model with CRRA preferences and Cobb-Douglas production.  The state variable is $k$, the capital-labor ratio.  The value function for the problem is given by:
 
-$$ V(k) = \max_{k'>0} \left\{ \log c + \beta V(k')  \right\} \\
-  \text{s.t.} \qquad k' =  f(k) - c + (1-\delta) k$$
+$$ V(k) = \max_{k'>0} \left\{ \frac{c^{1-\sigma}}{1-\sigma} + \beta V(k')  \right\} \\
+  \text{s.t.} \qquad k' =  A k^\alpha - c + (1-\delta) k$$
 
-Where $f(k) = Ak^\alpha$ is output per unit of capital.  This example is convenient because it has a known following analytical solution, which means that we can check the approximations relative to the exact truth.  
+This example is convenient because when $\sigma=1$ (so preferences over consumption are logarithmic) and $\delta=1$, then the model has a known following analytical solution.  This means that we can check the approximations relative to the exact truth in this case.
 
-The solution is:
+If $\sigma=\delta=1$, then the exact solution is:
 
-[[TO BE COMPLETED]]
+$$ V(k) = B_1 + B_2 \log k $$
+
+Where:
+$$ B_1 = \frac{ \alpha\beta \log (\alpha\beta) + \log(1-\alpha\beta) }{ 1 - \beta }   \qquad\qquad\qquad   B_2 =\frac{\alpha}{1-\alpha\beta}$$
+
 
 ## Value function iteration
 
