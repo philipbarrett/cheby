@@ -57,15 +57,24 @@ vf.update <- function( vf, alpha, betta, sigma, delta, k.range, order, sp=FALSE 
   optim.T.params <- function( kap )
     return( optim.T( kap, vf, alpha, betta, sigma, delta, k.range ) )
       # The operator T with current parameters substituted in
-  out <- d1.poly( fn=optim.T.params, range=k.range, iOrder=order, iPts=order+1, details=TRUE )
+  if( sp ){
+    out <- sp1.poly( fn=optim.T.params, range=k.range, iOrder=order,
+                     iPts=4*order, details=TRUE, n.shape=c(2, 2 * order ),
+                     sign.deriv=c(1,-1), quiet=TRUE )
+  }else{
+    out <- d1.poly( fn=optim.T.params, range=k.range, iOrder=order, iPts=order+1, 
+                    details=TRUE )
+  }
       # The polynomial approximation to the operator
   return( out )
 }
 
-vf.iterate <- function( vf, alpha, betta, sigma, delta, k.range, order, 
+vf.iterate <- function( vf, alpha, betta, sigma, delta, order, 
                         max.diff, max.it, sp=FALSE ){
 # Solves the neoclassical growth model via value function iteration
   
+  k.range <- c( 1e-04, delta ^ ( 1 / ( alpha - 1 ) ) )
+      # Range of k
   diff <- 2 * max.diff
   it <- 0
       # Initialize reporting variables
@@ -82,6 +91,10 @@ vf.iterate <- function( vf, alpha, betta, sigma, delta, k.range, order,
     vf.grid <- vf.grid.new
         # assign new variables to old
   }
-  
-  return( list( vf=vf, diff=diff, it=it ) )
+  optim.T.pols <- function( kap )
+    return( optim.T( kap, vf, alpha, betta, sigma, delta, k.range, TRUE ) )
+      # The operator T with current parameters substituted in.  Selects policies
+  pols <- rbind( test.grid, sapply( test.grid, optim.T.pols ) )
+      # The policy functions
+  return( list( vf=vf, pols=pols, diff=diff, it=it, k.range=k.range ) )
 }
