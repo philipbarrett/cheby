@@ -72,8 +72,9 @@ pp <-  seq( 0, 4, length.out=100 )
 plot( pp, sapply(pp, base$fn), lwd=2, col=2, type='l' )
 lines( pp, sapply(pp, log), lwd=2, col=1 )
 lines( pp, sapply(pp, sp.concave), lwd=2, col=4 )
-legend( 'bottomright', c( 'log', 'Order 6 polynomial approx', \\n
-     'Order 6 shape-preserving polynomial approx' ), lwd=2, col=c(1,2,4), bty='n' )
+legend( 'bottomright', c( 'log', 'Order 6 polynomial approx',
+     'Order 6 shape-preserving polynomial approx' ), lwd=2, 
+     col=c(1,2,4), bty='n' )
    # Compare the Chebychev and shape-preserving approximations
 }
 \references{

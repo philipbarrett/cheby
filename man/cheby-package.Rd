@@ -36,10 +36,13 @@ Judd, Kenneth L (1998) Numerical Methods in Economics
 \examples{
 ## Compute basic approximations to natural logarithm
 RR <- d1.poly( log, c(0,4), 6, 10 )
-SS <- sp1.poly( log, c(0,4), 6, 10, n.shape=c(5,10), sign.deriv=c(1,-1), solver='NLOPT_LD_SLSQP' )
+SS <- sp1.poly( log, c(0,4), 6, 10, n.shape=c(5,10), 
+        sign.deriv=c(1,-1), solver='NLOPT_LD_SLSQP' )
 pp <-  seq( 0, 4, length.out=100 )
 plot( pp, sapply(pp, RR), lwd=2, col=2, type='l' )
 lines( pp, sapply(pp, log), lwd=2, col=1 )
 lines( pp, sapply(pp, SS), lwd=2, col=4 )
-legend( 'bottomright', c( 'log', 'Order 6 polynomial approx', 'Order 6 shape-preserving polynomial approx' ), lwd=2, col=c(1,2,4), bty='n' )
+legend( 'bottomright', c( 'log', 'Order 6 polynomial approx', 
+        'Order 6 shape-preserving polynomial approx' ), 
+        lwd=2, col=c(1,2,4), bty='n' )
 }

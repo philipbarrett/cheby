@@ -19,7 +19,7 @@ Chebychev interpolation approximates an arbitrary function on a closed interval 
 
 Where $\phi_i(x)$ are polynomials.  In practice, this involves computing the function at a limited number of grid points, and then fitting a polynomial function through the function values at these points.  This fitting is typically done by linear regression of the points on the fitting polynomials.  This minimizes the square deviations at the grid points, but imposes no restrictions on the shape of the approximation.
 
-If we want the resulting approximation to have particular properties (such as monotonicity or concavity), then we will need to use other methods.  This package provides functionality to fit one-dimensional functions both via convential Chebychev approximation, and by imposing constraints on the shape of the approximation.
+If we want the resulting approximation to have particular properties (such as monotonicity or concavity), then we will need to use other methods.  This package provides functionality to fit one-dimensional functions both via conventional Chebychev approximation, and by imposing constraints on the shape of the approximation.
 
 The algorithms in this package draw heavily on Judd (1998).
 
@@ -29,7 +29,7 @@ The algorithms in this package draw heavily on Judd (1998).
 
 Algorithm 6.2 of Judd (1998) outlines the steps required to produce the one dimensional Chebychev interpolation of order $n$ on $m$ nodes (with $n<m$) of the function $f:[a,b]\rightarrow \mathbb R$.
 
-1. Compute the interpolaton nodes on $[-1,1]$ via:
+1. Compute the interpolation nodes on $[-1,1]$ via:
     $$z_k = -\cos \left( \frac{2k-1}{2m}\pi \right)$$
 1. Map the nodes to the interval $[a,b]$
     $$x_k = \left( \frac{b-a}{2} \right)(z_k+1) + a$$
@@ -74,7 +74,7 @@ library(microbenchmark)
 microbenchmark(base <- d1.poly( fn=log, range=c(.01,4), iOrder=6, iPts=7 ))
 ```
 
-However, the approximation is not strictly concave - it oscilates slightly around the approximated function.  Note how the dashed log function shows up alternately above and below the approximation.  In some numerical calculations, preserving shape properties of the function can be important.  Later we will discuss how value function will often fail if the continuation value function is not concave, as then there is no unique local interior maximum.  This is not a problem which can be eliminated by simply increasing the order of the approximation, either.  In fact this makes the problem worse.  A higher order approximation improves the fit for small $x$ but comes at the cost of more noticable oscilations at large $x$.
+However, the approximation is not strictly concave - it oscillates slightly around the approximated function.  Note how the dashed log function shows up alternately above and below the approximation.  In some numerical calculations, preserving shape properties of the function can be important.  Later we will discuss how value function will often fail if the continuation value function is not concave, as then there is no unique local interior maximum.  This is not a problem which can be eliminated by simply increasing the order of the approximation, either.  In fact this makes the problem worse.  A higher order approximation improves the fit for small $x$ but comes at the cost of more noticeable oscillations at large $x$.
 
 ## Extracting more information about the approximation
 
@@ -93,12 +93,12 @@ This returns a five-element list with elements:
 1e06 * ( base(1+1e-06) - base(1) )
 base.deets$fn.deriv(1)
 ```
-* `fn.deriv.poly`  The polynomial represenatation of the derivative.  The analogue of `poly`, but for `deriv`. 
+* `fn.deriv.poly`  The polynomial representation of the derivative.  The analogue of `poly`, but for `deriv`. 
 * `residuals` The residuals of the approximation.  All zero if `iPts` is one more than `iOrder`.
 
 ## Pre-computing function values
 
-The "standard" usage of `d1.poly` above integrates function calulcation and approximation.  This is convenient - it simply allows one to pass a function to the approximation and get a function back.  But it is not very flexible - it requires a delf-contained function to be evaluated seperately at each of the points in the grid.  In many applications this is not efficient.  For example, if the target function to be evaluated contains a computationally demanding common component, it may be quicker to calculate that on its own and then include that value in the evaluation of $f(\cdot)$ at each of the grid points.
+The "standard" usage of `d1.poly` above integrates function calculation and approximation.  This is convenient - it simply allows one to pass a function to the approximation and get a function back.  But it is not very flexible - it requires a self-contained function to be evaluated separately at each of the points in the grid.  In many applications this is not efficient.  For example, if the target function to be evaluated contains a computationally demanding common component, it may be quicker to calculate that on its own and then include that value in the evaluation of $f(\cdot)$ at each of the grid points.
 
 Here is an example of how to use this syntax
 
@@ -145,7 +145,7 @@ Functions of more variables can be approximated using `dn.poly`.  This works muc
 
 ## Usage
 
-To approximate a univariate function using a shape-preseving polynomial, we can use `sp1.poly`.  This function takes the same inputs as `d1.poly`, but now also requires details on the shape-preserving restrictions on the polynomial approximation.  These details are provided through the arguments `n.shape` and `sign.deriv`.  The former is a vector establishing the number of Chebychev nodes at which shape restrictions should be imposed.  The second is a vector of positive and negative unit values determining the sign of the restriction.  For example, to restrict the approximation to be increasinging at 3 points and concave at 7, one would use set `n.shape=c(3,7)` and `sign.deriv=c(1,-1)`.
+To approximate a univariate function using a shape-preserving polynomial, we can use `sp1.poly`.  This function takes the same inputs as `d1.poly`, but now also requires details on the shape-preserving restrictions on the polynomial approximation.  These details are provided through the arguments `n.shape` and `sign.deriv`.  The former is a vector establishing the number of Chebychev nodes at which shape restrictions should be imposed.  The second is a vector of positive and negative unit values determining the sign of the restriction.  For example, to restrict the approximation to be increasing at 3 points and concave at 7, one would use set `n.shape=c(3,7)` and `sign.deriv=c(1,-1)`.
 
 Here's a complete example:
 ```{r results='hold', fig.height=6, fig.width=8, echo=-5}
@@ -165,12 +165,12 @@ I now compute an example problem where the concavity or otherwise of the approxi
 
 ## The problem
 
-I solve the neoclassial growth model with CRRA preferences and Cobb-Douglas production.  The state variable is $k$, the capital-labor ratio.  The value function for the problem is given by:
+I solve the neoclassical growth model with CRRA preferences and Cobb-Douglas production.  The state variable is $k$, the capital-labor ratio.  The value function for the problem is given by:
 
 $$ V(k) = \max_{k'>0} \left\{ \frac{c^{1-\sigma}}{1-\sigma} + \beta V(k')  \right\} \\
   \text{s.t.} \qquad k' =  A k^\alpha - c + (1-\delta) k$$
 
-This example is convenient because when $\sigma=1$ (so preferences over consumption are logarithmic) and $\delta=1$, then the model has a known following analytical solution.  This means that we can check the approximations relative to the exact truth in this case.
+This example is convenient because when $\sigma=1$ (so preferences over consumption are logarithmic) and $\delta=1$, then the model has a known following analytic solution.  This means that we can check the approximations relative to the exact truth in this case.
 
 If $\sigma=\delta=1$, then the exact solution is:
 
